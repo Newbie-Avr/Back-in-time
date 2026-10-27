@@ -1,0 +1,350 @@
+/**
+ * Back in Time — Storage & Archive Management
+ * Audiovisual Heritage Edition: Supports films, video recordings, audio tracks,
+ * radio broadcasts, TV telecasts, photographs, slides, languages and documents.
+ */
+
+const STORAGE_KEYS = {
+  MEMORIES: 'back_in_time_memories',
+  SETTINGS: 'back_in_time_settings',
+  CHAT_HISTORY: 'back_in_time_chat_history'
+};
+
+const DEFAULT_SETTINGS = {
+  lmStudioBaseUrl: 'http://127.0.0.1:1234/v1',
+  modelId: '',
+  maxTokens: 900,
+  temperature: 0.3
+};
+
+// Seed sample memories celebrating World Day for Audiovisual Heritage
+const SAMPLE_MEMORIES = [
+  {
+    id: "mem_av_001",
+    title: "Super 8 Summer at Coney Island Boardwalk",
+    person: "Arthur Vance & Clara Schmidt",
+    year: "1964-07-04",
+    isApproximate: false,
+    mediaType: "film",
+    formatMedium: "Super 8mm Color Cine Reel (Kodachrome II)",
+    language: "English",
+    mediaDuration: "3m 42s",
+    mediaUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 380' width='100%' height='100%'><defs><linearGradient id='sky' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='%23ff5e7e'/><stop offset='50%' stop-color='%23ffbe0b'/><stop offset='100%' stop-color='%2300f0ff'/></linearGradient><linearGradient id='ferris' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='%2305ffa1'/><stop offset='100%' stop-color='%23ff2a6d'/></linearGradient></defs><rect width='600' height='380' fill='url(%23sky)'/><circle cx='300' cy='180' r='110' fill='none' stroke='url(%23ferris)' stroke-width='6' stroke-dasharray='12,6'/><circle cx='300' cy='180' r='8' fill='%23fff'/><line x1='300' y1='70' x2='300' y2='290' stroke='%23fff' stroke-width='3'/><line x1='190' y1='180' x2='410' y2='180' stroke='%23fff' stroke-width='3'/><line x1='222' y1='102' x2='378' y2='258' stroke='%23fff' stroke-width='3'/><line x1='222' y1='258' x2='378' y2='102' stroke='%23fff' stroke-width='3'/><rect y='300' width='600' height='80' fill='%2319102c'/><path d='M0 310 Q 150 280 300 310 T 600 310 L 600 380 L 0 380 Z' fill='%23ff7700' opacity='0.7'/><text x='30' y='50' fill='%23fff' font-family='sans-serif' font-weight='900' font-size='24' letter-spacing='2'>CONEY ISLAND 1964</text><text x='30' y='75' fill='%2300f0ff' font-family='sans-serif' font-size='14' letter-spacing='1'>8MM KODACHROME COLOR REEL #3</text><rect x='10' y='10' width='580' height='360' fill='none' stroke='%23ff2a6d' stroke-width='3'/></svg>",
+    notes: "Home movie captured on Arthur's handheld Bell & Howell 8mm camera. Shows Aunt Martha eating blue cotton candy by the Wonder Wheel ferris wheel, with the Atlantic surf sparkling in the background. Silent recording with vivid warm saturated colors.",
+    source: "Found in Arthur's metal film canister labeled 'Summer '64 Brooklyn/Coney', reel digitized at 2K resolution in 2021.",
+    evidenceCategory: "documented",
+    tags: ["film", "super 8", "coney island", "summer", "brooklyn", "kodachrome", "audiovisual heritage"],
+    createdAt: "2026-10-27T10:00:00.000Z",
+    updatedAt: "2026-10-27T10:00:00.000Z"
+  },
+  {
+    "id": "mem_av_002",
+    "title": "Living Room Cassette Tape: Grandpa Recounting the 1930s",
+    "person": "Arthur Vance",
+    "year": "1978-11-23",
+    "isApproximate": false,
+    "mediaType": "audio",
+    "formatMedium": "Philips Compact Cassette C-90 (Ferric Tape)",
+    "language": "English / Chicago Dialect",
+    "mediaDuration": "42m 15s",
+    "mediaUrl": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 380' width='100%' height='100%'><rect width='600' height='380' fill='%23120e24'/><rect x='60' y='40' width='480' height='300' rx='20' fill='%23ffbe0b'/><rect x='90' y='70' width='420' height='160' rx='10' fill='%23ff2a6d'/><rect x='160' y='100' width='280' height='100' rx='15' fill='%23fff'/><circle cx='230' cy='150' r='32' fill='%23120e24'/><circle cx='230' cy='150' r='12' fill='%23ffbe0b'/><circle cx='370' cy='150' r='32' fill='%23120e24'/><circle cx='370' cy='150' r='12' fill='%23ffbe0b'/><rect x='250' y='140' width='100' height='20' fill='%23ff7700'/><polygon points='180,260 420,260 400,310 200,310' fill='%23221b3a'/><text x='180' y='92' fill='%23fff' font-family='monospace' font-weight='bold' font-size='16'>MAXELL C-90 • ORAL INTERVIEW</text><text x='180' y='125' fill='%23120e24' font-family='sans-serif' font-weight='bold' font-size='14'>SIDE A: Halsted Bakery &amp; Depression Lore</text></svg>",
+    "notes": "Oral history tape recorded on Thanksgiving evening 1978 with a portable shoebox tape recorder. You can hear coffee cups clinking, children laughing in the next room, and Arthur's raspy voice explaining how flour was rationed and how the neighborhood rallied together.",
+    "source": "Physical cassette tape labeled 'Dad Oral Memories Nov 78', preserved in cassette case.",
+    "evidenceCategory": "family_recollection",
+    "tags": ["audio", "cassette tape", "oral history", "voice", "thanksgiving 1978", "depression era"],
+    "createdAt": "2026-10-27T10:05:00.000Z",
+    "updatedAt": "2026-10-27T10:05:00.000Z"
+  },
+  {
+    "id": "mem_av_003",
+    "title": "Live Radio Broadcast: Apollo 11 Lunar Landing",
+    "person": "Arthur Vance, Clara Schmidt & Children",
+    "year": "1969-07-20",
+    "isApproximate": false,
+    "mediaType": "radio",
+    "formatMedium": "AM Radio Aircheck / 1/4\" Reel-to-Reel Tape",
+    "language": "English",
+    "mediaDuration": "18m 04s",
+    "mediaUrl": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 380' width='100%' height='100%'><defs><radialGradient id='tunerGlow' cx='50%' cy='50%' r='50%'><stop offset='0%' stop-color='%2300f0ff'/><stop offset='100%' stop-color='%230d0221'/></radialGradient></defs><rect width='600' height='380' fill='%230d0221'/><rect x='50' y='50' width='500' height='280' rx='25' fill='%23281c4d' stroke='%2300f0ff' stroke-width='4'/><rect x='80' y='80' width='300' height='120' rx='10' fill='url(%23tunerGlow)'/><text x='100' y='125' fill='%23fff' font-family='monospace' font-weight='bold' font-size='20'>AM 780 WBBM CHICAGO</text><text x='100' y='160' fill='%23ffbe0b' font-family='monospace' font-size='14'>\"THE EAGLE HAS LANDED\"</text><circle cx='440' cy='140' r='45' fill='%23ff7700' stroke='%23ffbe0b' stroke-width='5'/><line x1='440' y1='140' x2='470' y2='120' stroke='%23fff' stroke-width='4'/><rect x='80' y='230' width='440' height='60' rx='6' fill='%23160e33'/><line x1='100' y1='260' x2='500' y2='260' stroke='%2305ffa1' stroke-width='3'/><circle cx='340' cy='260' r='10' fill='%23ff2a6d'/></svg>",
+    "notes": "Family gathered around the Zenith tabletop tube radio in the parlor. Recorded on Arthur's Wollensak reel-to-reel tape machine directly from the speaker. The broadcast captured Walter Cronkite and radio commentators alongside the family's cheers when Neil Armstrong touched down.",
+    "source": "Scotch 111 Magnetic Tape spool in original cardboard box with Arthur's handwriting: 'Moon Landing 7/20/69 Off The Air'.",
+    "evidenceCategory": "documented",
+    "tags": ["radio", "apollo 11", "moon landing", "broadcast", "reel-to-reel", "1969", "zenith"],
+    "createdAt": "2026-10-27T10:10:00.000Z",
+    "updatedAt": "2026-10-27T10:10:00.000Z"
+  },
+  {
+    "id": "mem_av_004",
+    "title": "VHS Camcorder Christmas Morning 1986",
+    "person": "The Vance & Schmidt Family",
+    "year": "1986-12-25",
+    "isApproximate": false,
+    "mediaType": "video",
+    "formatMedium": "JVC Standard VHS Cassette (SP Mode)",
+    "language": "English",
+    "mediaDuration": "58m 10s",
+    "mediaUrl": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 380' width='100%' height='100%'><rect width='600' height='380' fill='%230a0814'/><rect x='70' y='50' width='460' height='280' rx='12' fill='%231a1530' stroke='%23ff2a6d' stroke-width='3'/><rect x='110' y='90' width='380' height='110' rx='8' fill='%23fff'/><rect x='130' y='110' width='340' height='70' rx='4' fill='%23ffbe0b'/><text x='145' y='145' fill='%23120e24' font-family='sans-serif' font-weight='900' font-size='22'>TDK E-180 VHS</text><text x='145' y='168' fill='%23ff2a6d' font-family='monospace' font-weight='bold' font-size='13'>SP MODE • XMAS '86 HOME TAPE</text><circle cx='200' cy='250' r='35' fill='%23000' stroke='%2305ffa1' stroke-width='4'/><circle cx='400' cy='250' r='35' fill='%23000' stroke='%2305ffa1' stroke-width='4'/><text x='250' y='305' fill='%2300f0ff' font-family='monospace' font-size='15'>[ PLAY ▶ 12:25:86 ]</text></svg>",
+    "notes": "Shot on Uncle Raymond's heavy shoulder-mounted Panasonic Omnimovie VHS camcorder. Features bright retro wrapping paper, children opening Nintendo NES boxes, 80s holiday sweaters, and Grandpa Arthur smiling from his armchair with colorful tree lights blinking in red and green.",
+    "source": "Digitized from the original TDK VHS tape found in the living room entertainment center cabinet.",
+    "evidenceCategory": "documented",
+    "tags": ["video", "vhs", "camcorder", "christmas", "1980s", "retro tech", "home video"],
+    "createdAt": "2026-10-27T10:15:00.000Z",
+    "updatedAt": "2026-10-27T10:15:00.000Z"
+  },
+  {
+    "id": "mem_av_005",
+    "title": "Acetate Disc: Local Italian Radio Hour (La Voce d'Italia)",
+    "person": "Nonna Maria & Uncle Giuseppe",
+    "year": "Circa 1948",
+    "isApproximate": true,
+    "mediaType": "radio",
+    "formatMedium": "12-inch 78 RPM Lacquer/Acetate Transcription Disc",
+    "language": "Italian / Neapolitan Dialect",
+    "mediaDuration": "12m 30s",
+    "mediaUrl": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 380' width='100%' height='100%'><rect width='600' height='380' fill='%23150d2a'/><circle cx='300' cy='190' r='150' fill='%23111' stroke='%23443b68' stroke-width='8'/><circle cx='300' cy='190' r='130' fill='none' stroke='%23221b3e' stroke-width='2' stroke-dasharray='4,2'/><circle cx='300' cy='190' r='100' fill='none' stroke='%23221b3e' stroke-width='2' stroke-dasharray='8,3'/><circle cx='300' cy='190' r='60' fill='%23ff5e00'/><circle cx='300' cy='190' r='10' fill='%23fff'/><text x='250' y='180' fill='%23fff' font-family='serif' font-weight='bold' font-size='13'>LA VOCE</text><text x='245' y='200' fill='%23ffbe0b' font-family='serif' font-size='10'>D'ITALIA 78 RPM</text><text x='40' y='60' fill='%2305ffa1' font-family='monospace' font-weight='bold' font-size='18'>COMMUNITY RADIO ARCHIVE</text></svg>",
+    "notes": "Sunday morning ethnic radio broadcast in Chicago's Near West Side. Nonna Maria singing a folk tarantella with accordion accompaniment, followed by a message sending greetings to relatives in Naples. Shows how immigrant communities preserved language and song through broadcast media.",
+    "source": "One-off instantaneous recording disc cut directly during the studio broadcast at station WEDC.",
+    "evidenceCategory": "family_recollection",
+    "tags": ["radio", "italian", "language", "acetate disc", "folk music", "78 rpm", "chicago"],
+    "createdAt": "2026-10-27T10:20:00.000Z",
+    "updatedAt": "2026-10-27T10:20:00.000Z"
+  },
+  {
+    "id": "mem_av_006",
+    "title": "Vibrant Kodachrome Slide: 1959 Chevrolet Impala Road Trip",
+    "person": "Thomas Vance & Cousins",
+    "year": "1959-08-14",
+    "isApproximate": false,
+    "mediaType": "photo",
+    "formatMedium": "35mm Color Reversal Film (Kodachrome Transparency)",
+    "language": "Visual",
+    "mediaDuration": "Still Image",
+    "mediaUrl": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 380' width='100%' height='100%'><defs><linearGradient id='sunset' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='%23ff2a6d'/><stop offset='60%' stop-color='%23ff7700'/><stop offset='100%' stop-color='%2305ffa1'/></linearGradient></defs><rect width='600' height='380' fill='%23f4ede2'/><rect x='60' y='20' width='480' height='340' fill='%23fff' stroke='%23ddd' stroke-width='2' filter='drop-shadow(0 10px 15px rgba(0,0,0,0.3))'/><rect x='100' y='45' width='400' height='250' fill='url(%23sunset)'/><rect x='100' y='210' width='400' height='85' fill='%23221b38'/><circle cx='410' cy='110' r='35' fill='%23ffbe0b'/><path d='M140 230 Q 250 180 460 230 L 440 250 L 160 250 Z' fill='%2300f0ff'/><text x='110' y='325' fill='%23888' font-family='sans-serif' font-weight='bold' font-size='14'>KODACHROME TRANSPARENCY • ROUTE 66 AUG 1959</text></svg>",
+    "notes": "Vivid color slide with Kodachrome's legendary saturation. Shows Thomas leaning against the wing-fin of a turquoise 1959 Chevy Impala outside a neon motel along Route 66 in New Mexico. The desert sunset sky is glowing in deep pink, orange, and turquoise.",
+    "source": "Cardboard-mounted 35mm slide labeled 'Route 66 New Mexico Aug 59', scanned at 4000 DPI.",
+    "evidenceCategory": "documented",
+    "tags": ["photo", "kodachrome", "route 66", "1959 chevy", "road trip", "neon", "audiovisual"],
+    "createdAt": "2026-10-27T10:25:00.000Z",
+    "updatedAt": "2026-10-27T10:25:00.000Z"
+  }
+];
+
+class ArchiveStorage {
+  constructor() {
+    this._initStorage();
+  }
+
+  _initStorage() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEYS.MEMORIES);
+      if (!stored) {
+        localStorage.setItem(STORAGE_KEYS.MEMORIES, JSON.stringify(SAMPLE_MEMORIES));
+      } else {
+        // If stored memories don't have mediaType, upgrade them with default media types
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0 && !parsed[0].mediaType) {
+          localStorage.setItem(STORAGE_KEYS.MEMORIES, JSON.stringify(SAMPLE_MEMORIES));
+        }
+      }
+    } catch (e) {
+      console.warn('LocalStorage not available or full:', e);
+    }
+  }
+
+  getAll() {
+    try {
+      const data = localStorage.getItem(STORAGE_KEYS.MEMORIES);
+      return data ? JSON.parse(data) : [];
+    } catch (e) {
+      console.error('Failed to read memories from localStorage:', e);
+      return [];
+    }
+  }
+
+  getById(id) {
+    const list = this.getAll();
+    return list.find(m => m.id === id) || null;
+  }
+
+  save(record) {
+    const memories = this.getAll();
+    const now = new Date().toISOString();
+
+    const normalized = {
+      ...record,
+      mediaType: ['film', 'video', 'audio', 'radio', 'television', 'photo', 'document'].includes(record.mediaType)
+        ? record.mediaType
+        : 'photo',
+      formatMedium: record.formatMedium || 'Standard Archive Format',
+      language: record.language || 'English',
+      mediaDuration: record.mediaDuration || '',
+      mediaUrl: record.mediaUrl || ''
+    };
+
+    if (!record.id) {
+      const newRecord = {
+        ...normalized,
+        id: `mem_av_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        createdAt: now,
+        updatedAt: now
+      };
+      memories.unshift(newRecord);
+      this._persist(memories);
+      return newRecord;
+    } else {
+      const index = memories.findIndex(m => m.id === record.id);
+      if (index === -1) {
+        throw new Error(`Record with ID ${record.id} not found.`);
+      }
+      const updated = {
+        ...memories[index],
+        ...normalized,
+        updatedAt: now
+      };
+      memories[index] = updated;
+      this._persist(memories);
+      return updated;
+    }
+  }
+
+  delete(id) {
+    const memories = this.getAll();
+    const filtered = memories.filter(m => m.id !== id);
+    this._persist(filtered);
+    return true;
+  }
+
+  clearAll() {
+    this._persist([]);
+    localStorage.removeItem(STORAGE_KEYS.CHAT_HISTORY);
+  }
+
+  loadSamples() {
+    this._persist(SAMPLE_MEMORIES);
+    return SAMPLE_MEMORIES;
+  }
+
+  _persist(memories) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.MEMORIES, JSON.stringify(memories));
+    } catch (e) {
+      throw new Error('Unable to save to browser storage. Your storage quota may be exceeded.');
+    }
+  }
+
+  exportArchive() {
+    const memories = this.getAll();
+    const exportData = {
+      archiveName: "Back in Time — Audiovisual Heritage Archive",
+      celebration: "World Day for Audiovisual Heritage (October 27)",
+      exportedAt: new Date().toISOString(),
+      version: "2.0-audiovisual",
+      recordCount: memories.length,
+      records: memories
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const dateStr = new Date().toISOString().split('T')[0];
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `back-in-time-audiovisual-archive-${dateStr}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  importArchive(jsonString, mode = 'merge') {
+    let parsed;
+    try {
+      parsed = JSON.parse(jsonString);
+    } catch (e) {
+      throw new Error('Invalid JSON file format.');
+    }
+
+    let incoming = [];
+    if (Array.isArray(parsed)) {
+      incoming = parsed;
+    } else if (parsed && Array.isArray(parsed.records)) {
+      incoming = parsed.records;
+    } else {
+      throw new Error('The imported file does not contain a valid records array.');
+    }
+
+    const validated = [];
+    for (const item of incoming) {
+      if (!item.title || !item.person || !item.notes) {
+        continue;
+      }
+      validated.push({
+        id: item.id || `mem_av_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        title: String(item.title).trim(),
+        person: String(item.person).trim(),
+        year: item.year ? String(item.year).trim() : '',
+        isApproximate: Boolean(item.isApproximate),
+        mediaType: ['film', 'video', 'audio', 'radio', 'television', 'photo', 'document'].includes(item.mediaType)
+          ? item.mediaType
+          : 'photo',
+        formatMedium: item.formatMedium ? String(item.formatMedium).trim() : 'Archive Medium',
+        language: item.language ? String(item.language).trim() : 'English',
+        mediaDuration: item.mediaDuration ? String(item.mediaDuration).trim() : '',
+        mediaUrl: item.mediaUrl ? String(item.mediaUrl).trim() : '',
+        notes: String(item.notes).trim(),
+        source: item.source ? String(item.source).trim() : 'Audiovisual Archive',
+        evidenceCategory: ['documented', 'family_recollection', 'possible_interpretation', 'uncertain'].includes(item.evidenceCategory)
+          ? item.evidenceCategory
+          : 'family_recollection',
+        tags: Array.isArray(item.tags) ? item.tags.map(t => String(t).trim().toLowerCase()).filter(Boolean) : [],
+        createdAt: item.createdAt || new Date().toISOString(),
+        updatedAt: item.updatedAt || new Date().toISOString()
+      });
+    }
+
+    if (validated.length === 0) {
+      throw new Error('No valid memory records were found in the file.');
+    }
+
+    if (mode === 'replace') {
+      this._persist(validated);
+    } else {
+      const existing = this.getAll();
+      const existingIds = new Set(existing.map(m => m.id));
+      const existingKeys = new Set(existing.map(m => `${m.title.toLowerCase()}::${m.person.toLowerCase()}`));
+
+      for (const item of validated) {
+        const key = `${item.title.toLowerCase()}::${item.person.toLowerCase()}`;
+        if (!existingIds.has(item.id) && !existingKeys.has(key)) {
+          existing.push(item);
+        }
+      }
+      this._persist(existing);
+    }
+
+    return validated.length;
+  }
+
+  getSettings() {
+    try {
+      const data = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+      return data ? { ...DEFAULT_SETTINGS, ...JSON.parse(data) } : { ...DEFAULT_SETTINGS };
+    } catch {
+      return { ...DEFAULT_SETTINGS };
+    }
+  }
+
+  saveSettings(newSettings) {
+    try {
+      const current = this.getSettings();
+      const merged = { ...current, ...newSettings };
+      localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(merged));
+      return merged;
+    } catch (e) {
+      console.error('Failed to save settings:', e);
+      return DEFAULT_SETTINGS;
+    }
+  }
+}
+
+window.archiveStorage = new ArchiveStorage();
