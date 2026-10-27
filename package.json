@@ -1,0 +1,20 @@
+{
+  "name": "back-in-time",
+  "version": "1.0.0",
+  "description": "A personal memory & history archive powered by local LM Studio AI",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "memory",
+    "history",
+    "archive",
+    "lm-studio",
+    "local-ai",
+    "privacy"
+  ],
+  "author": "Back in Time Contributors",
+  "license": "MIT"
+}

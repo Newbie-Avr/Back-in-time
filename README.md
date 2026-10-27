@@ -1,4 +1,3 @@
-# Back-in-time
 # Back in Time — Personal Memory & History Archive
 
 > An open-source, privacy-first local AI archive for preserving family memories, personal histories, and oral traditions—powered exclusively by LM Studio on your own machine.
