@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Back in Time — Audiovisual Heritage Archive</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="retro-theme crt-scanlines">
+  <!-- WORLD DAY FOR AUDIOVISUAL HERITAGE BANNER -->
+  <aside class="heritage-top-banner" role="banner">
+    <div class="banner-inner container">
+      <div class="banner-left">
+        <span class="heritage-badge-pulse">✨ OCT 27 • WORLD DAY FOR AUDIOVISUAL HERITAGE</span>
+        <span class="banner-title">Preserving the Sounds, Moving Images, Languages &amp; Collective Memory of Humanity</span>
+      </div>
+      <div class="banner-controls">
+        <button type="button" class="btn-crt-toggle" id="btn-toggle-crt" title="Toggle Retro CRT Scanlines">
+          📺 CRT: <span id="crt-status-text">ON</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Top Archival Navigation Bar -->
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="brand">
+        <a href="#home" class="brand-link" id="brand-logo">
+          <span class="brand-icon-reel">🎞️</span>
+          <div class="brand-text">
+            <span class="brand-title">Back in Time</span>
+            <span class="brand-subtitle">Audiovisual Heritage Archive</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="main-nav" aria-label="Main Navigation">
+        <ul class="nav-list">
+          <li><a href="#home" class="nav-link active" data-page="home">Home</a></li>
+          <li><a href="#archive" class="nav-link" data-page="archive">Media Archive</a></li>
+          <li><a href="#timeline" class="nav-link" data-page="timeline">Timeline</a></li>
+          <li><a href="#explorer" class="nav-link" data-page="explorer">AI Explorer</a></li>
+          <li><a href="#settings" class="nav-link" data-page="settings">Settings</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="#settings" class="ai-status-pill" id="global-ai-status" title="LM Studio connection status">
+          <span class="status-dot status-offline"></span>
+          <span class="status-label">LM Studio: Checking...</span>
+        </a>
+        <button class="btn btn-neon-pink btn-sm" id="btn-quick-add" type="button">
+          <span class="btn-icon">📼</span> Record Media
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Content Area -->
+  <main class="site-main container">
+    <!-- PAGE 1: HOME -->
+    <section id="page-home" class="page-section active">
+      <!-- 3D Retro Hero Showcase -->
+      <div class="hero-retro">
+        <div class="hero-film-sprocket top-sprocket"></div>
+
+        <div class="hero-content">
+          <div class="retro-neon-pill">HISTORICAL BROADCASTS • HOME FILMS • ORAL TAPES • SOUNDSCAPES</div>
+          <h1 class="hero-title">
+            Capture Your Memories In <span class="neon-text-cyan">Films</span>, <span class="neon-text-pink">Tapes</span> &amp; <span class="neon-text-yellow">Broadcasts</span>
+          </h1>
+          <p class="hero-description">
+            Celebrate the <strong>World Day for Audiovisual Heritage</strong> by preserving your family’s home movies, cassette recordings, radio broadcasts, television newsreels, and vibrant Kodachrome pictures.
+            Powered locally and privately by <strong>LM Studio</strong>.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn btn-neon-pink btn-lg" id="btn-hero-add" type="button">
+              📼 Add Audiovisual Memory
+            </button>
+            <a href="#explorer" class="btn btn-neon-cyan btn-lg">
+              ✦ Ask Archive AI
+            </a>
+            <a href="#timeline" class="btn btn-neon-yellow btn-lg">
+              ⏳ Explore Timeline
+            </a>
+          </div>
+        </div>
+
+        <!-- Interactive 3D Boombox / Reel-to-Reel Tape Deck -->
+        <div class="retro-deck-container">
+          <div class="retro-deck" id="interactive-deck">
+            <div class="deck-header">
+              <span class="deck-brand">RETRO-SONIC 9000</span>
+              <span class="deck-indicator" id="deck-status-led">READY</span>
+            </div>
+
+            <!-- Tape Cassette Display with 3D Spools -->
+            <div class="cassette-window">
+              <div class="cassette-body">
+                <div class="spool spool-left" id="spool-left">
+                  <div class="spool-teeth"></div>
+                </div>
+                <div class="cassette-label-box">
+                  <div class="cassette-title" id="deck-track-title">CONEY ISLAND '64 &amp; WBBM RADIO '69</div>
+                  <div class="cassette-sub">AUDIOVISUAL HERITAGE MASTER</div>
+                </div>
+                <div class="spool spool-right" id="spool-right">
+                  <div class="spool-teeth"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Equalizer / VU Meter -->
+            <div class="vu-equalizer" id="vu-meter">
+              <div class="vu-bar" style="--h: 60%"></div>
+              <div class="vu-bar" style="--h: 85%"></div>
+              <div class="vu-bar" style="--h: 40%"></div>
+              <div class="vu-bar" style="--h: 95%"></div>
+              <div class="vu-bar" style="--h: 75%"></div>
+              <div class="vu-bar" style="--h: 50%"></div>
+              <div class="vu-bar" style="--h: 90%"></div>
+              <div class="vu-bar" style="--h: 65%"></div>
+              <div class="vu-bar" style="--h: 80%"></div>
+              <div class="vu-bar" style="--h: 45%"></div>
+            </div>
+
+            <!-- Physical Tactile Controls -->
+            <div class="deck-controls">
+              <button type="button" class="deck-btn" id="btn-deck-play">
+                <span class="deck-btn-icon">▶</span> PLAY
+              </button>
+              <button type="button" class="deck-btn" id="btn-deck-stop">
+                <span class="deck-btn-icon">■</span> STOP
+              </button>
+              <button type="button" class="deck-btn" id="btn-deck-shuffle">
+                <span class="deck-btn-icon">🔀</span> SAMPLE RECORD
+              </button>
+              <div class="deck-counter" id="deck-time-counter">00:00</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-film-sprocket bottom-sprocket"></div>
+      </div>
+
+      <!-- Live Archive Counter Strip -->
+      <div class="retro-stats-strip">
+        <div class="stat-card stat-cyan">
+          <span class="stat-icon">🎞️</span>
+          <span class="stat-value" id="stat-total-memories">6</span>
+          <span class="stat-label">Heritage Records</span>
+        </div>
+        <div class="stat-card stat-pink">
+          <span class="stat-icon">🎙️</span>
+          <span class="stat-value" id="stat-total-media-types">5</span>
+          <span class="stat-label">Audiovisual Media</span>
+        </div>
+        <div class="stat-card stat-yellow">
+          <span class="stat-icon">🌍</span>
+          <span class="stat-value" id="stat-total-languages">2</span>
+          <span class="stat-label">Languages &amp; Dialects</span>
+        </div>
+        <div class="stat-card stat-green">
+          <span class="stat-icon">🔒</span>
+          <span class="stat-value" id="stat-ai-provider">100%</span>
+          <span class="stat-label">Local &amp; Offline</span>
+        </div>
+      </div>
+
+      <!-- Audiovisual Heritage Media Categories Grid -->
+      <h2 class="retro-section-heading"><span>AUDIOVISUAL PRESERVATION DOMAINS</span></h2>
+
+      <div class="heritage-types-grid">
+        <div class="heritage-type-card card-film" data-filter-type="film">
+          <div class="type-icon">🎞️</div>
+          <h3 class="type-title">Films &amp; Cine Reels</h3>
+          <p class="type-text">Super 8mm, 16mm, and 35mm motion pictures, home films, and historical newsreels.</p>
+        </div>
+
+        <div class="heritage-type-card card-video" data-filter-type="video">
+          <div class="type-icon">📼</div>
+          <h3 class="type-title">Video Tapes &amp; Camcorders</h3>
+          <p class="type-text">VHS, Betamax, Hi8, and MiniDV recordings of family gatherings, holidays, and milestones.</p>
+        </div>
+
+        <div class="heritage-type-card card-audio" data-filter-type="audio">
+          <div class="type-icon">🎙️</div>
+          <h3 class="type-title">Audio Tracks &amp; Cassettes</h3>
+          <p class="type-text">Compact cassettes, reel-to-reel magnetic tapes, oral histories, and spoken voice letters.</p>
+        </div>
+
+        <div class="heritage-type-card card-radio" data-filter-type="radio">
+          <div class="type-icon">📻</div>
+          <h3 class="type-title">Radio &amp; Sound Archives</h3>
+          <p class="type-text">Airchecks, community broadcasts, 78 RPM acetate discs, and regional music traditions.</p>
+        </div>
+
+        <div class="heritage-type-card card-photo" data-filter-type="photo">
+          <div class="type-icon">📸</div>
+          <h3 class="type-title">Kodachrome &amp; Polaroids</h3>
+          <p class="type-text">Color slides, vintage print tintypes, instant polaroids, and photographic glass plates.</p>
+        </div>
+
+        <div class="heritage-type-card card-tv" data-filter-type="television">
+          <div class="type-icon">📺</div>
+          <h3 class="type-title">Television &amp; Broadcasts</h3>
+          <p class="type-text">Archived telecasts, broadcast interviews, cultural celebrations, and televised history.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 2: MEMORY ARCHIVE -->
+    <section id="page-archive" class="page-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">The Audiovisual Heritage Archive</h2>
+          <p class="section-subtitle">Browse home films, tapes, radio airchecks, Kodachrome slides, and spoken voice recordings.</p>
+        </div>
+        <div class="section-actions">
+          <button class="btn btn-neon-pink" id="btn-archive-add" type="button">
+            + Record Media Memory
+          </button>
+        </div>
+      </div>
+
+      <!-- Search & Retro Media Filters -->
+      <div class="archive-controls">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="archive-search-input" placeholder="Search films, audio tapes, radio airchecks, people, languages, or years..." autocomplete="off">
+          <button class="search-clear" id="btn-clear-search" title="Clear search" type="button">&times;</button>
+        </div>
+
+        <!-- Media Type Selector Filter Bar -->
+        <div class="media-type-chips-bar" id="media-type-chips">
+          <button class="media-filter-chip active" data-type="all">✨ All Media</button>
+          <button class="media-filter-chip" data-type="film">🎞️ Films</button>
+          <button class="media-filter-chip" data-type="video">📼 Video / VHS</button>
+          <button class="media-filter-chip" data-type="audio">🎙️ Audio Cassettes</button>
+          <button class="media-filter-chip" data-type="radio">📻 Radio Airchecks</button>
+          <button class="media-filter-chip" data-type="photo">📸 Kodachrome &amp; Slides</button>
+          <button class="media-filter-chip" data-type="television">📺 Television</button>
+          <button class="media-filter-chip" data-type="document">📜 Documents</button>
+        </div>
+
+        <div class="filters-row">
+          <div class="filter-group">
+            <label for="filter-evidence">Evidence Category:</label>
+            <select id="filter-evidence" class="form-select">
+              <option value="all">All Evidence Classes</option>
+              <option value="documented">📜 Documented Record</option>
+              <option value="family_recollection">🗣️ Family Recollection</option>
+              <option value="possible_interpretation">💡 Possible Interpretation</option>
+              <option value="uncertain">❓ Uncertain / Conflicting</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-person">Person / Voice / Subject:</label>
+            <select id="filter-person" class="form-select">
+              <option value="all">All People</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-sort">Sort Order:</label>
+            <select id="filter-sort" class="form-select">
+              <option value="date-desc">Chronological (Newest first)</option>
+              <option value="date-asc">Chronological (Oldest first)</option>
+              <option value="created-desc">Date Added (Recent first)</option>
+              <option value="title-asc">Title (A &rarr; Z)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Filter Chips / Counter -->
+      <div class="archive-summary-bar">
+        <span id="archive-results-count">Showing 0 records</span>
+        <button class="btn-text" id="btn-reset-filters" type="button">Reset Filters</button>
+      </div>
+
+      <!-- 3D Interactive Memory Grid -->
+      <div class="memory-grid-3d" id="memory-grid">
+        <!-- Rendered dynamically by JavaScript with 3D perspective -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state hidden" id="archive-empty-state">
+        <div class="empty-icon">📼</div>
+        <h3 class="empty-title">No matching media records found</h3>
+        <p class="empty-text">No records match your search or media filter. Create your first record or reset filters.</p>
+        <div class="empty-actions">
+          <button class="btn btn-neon-pink" id="btn-empty-add" type="button">Record Media Memory</button>
+          <button class="btn btn-neon-cyan" id="btn-empty-sample" type="button">Load Sample Records</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: TIMELINE -->
+    <section id="page-timeline" class="page-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Audiovisual Chronology</h2>
+          <p class="section-subtitle">A timeline of moving images, magnetic tape recordings, broadcast airchecks, and historical slides.</p>
+        </div>
+        <div class="timeline-legend">
+          <span class="legend-item"><span class="legend-dot exact"></span> Confirmed Date</span>
+          <span class="legend-item"><span class="legend-dot approx"></span> Circa / Approximate</span>
+        </div>
+      </div>
+
+      <!-- Chronological Timeline Spine -->
+      <div class="timeline-container" id="timeline-container">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+
+      <!-- Undated Records Drawer / Vault -->
+      <div class="undated-records-section" id="undated-section">
+        <div class="undated-header">
+          <div class="undated-title">
+            <span class="undated-icon">📂</span>
+            <h3>Undated Reels, Tapes &amp; Recordings</h3>
+            <span class="badge badge-muted" id="undated-count-badge">0 records</span>
+          </div>
+          <p class="undated-note">These audiovisual artifacts lack verified broadcast or filming dates. In accordance with archival ethics, Back in Time never invents dates.</p>
+        </div>
+        <div class="memory-grid-3d undated-grid" id="undated-memory-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 4: MEMORY EXPLORER -->
+    <section id="page-explorer" class="page-section">
+      <div class="explorer-layout">
+        <!-- Explorer Sidebar / Context Controls -->
+        <aside class="explorer-sidebar">
+          <div class="sidebar-card">
+            <h3 class="sidebar-title">Archive Inquiry</h3>
+            <p class="sidebar-subtitle">Investigate oral memories, broadcasts, films, and timeline details.</p>
+
+            <div class="form-group">
+              <label for="explorer-person-filter">Focus on Subject:</label>
+              <select id="explorer-person-filter" class="form-select">
+                <option value="all">Entire Family Archive (All Records)</option>
+              </select>
+            </div>
+
+            <div class="context-counter-box">
+              <div class="context-stat">
+                <span class="context-stat-val" id="explorer-records-loaded">0</span>
+                <span class="context-stat-lbl">Records in Scope</span>
+              </div>
+              <div class="context-stat">
+                <span class="context-stat-val" id="explorer-evidence-ratio">0%</span>
+                <span class="context-stat-lbl">Documented Ratio</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-card">
+            <h4 class="sidebar-heading">Investigative Prompts</h4>
+            <div class="prompt-chips">
+              <button class="prompt-chip" data-prompt="What audiovisual recordings and home movies do I have, and what is preserved in each?" type="button">
+                🎞️ Summarize all audiovisual recordings
+              </button>
+              <button class="prompt-chip" data-prompt="What oral stories were recorded on cassette tapes, and which details lack physical records?" type="button">
+                🎙️ Analyze oral cassette tapes
+              </button>
+              <button class="prompt-chip" data-prompt="Which details in my archive are verified documents vs family recollection?" type="button">
+                ⚖️ Separate verified facts from family lore
+              </button>
+              <button class="prompt-chip" data-prompt="What specific questions could I ask surviving relatives to verify these broadcast and home tape stories?" type="button">
+                🧭 What questions should I ask relatives?
+              </button>
+              <button class="prompt-chip" data-prompt="Help me arrange these events into a chronological timeline and check for inconsistencies." type="button">
+                ⏳ Check timeline for inconsistencies
+              </button>
+            </div>
+          </div>
+
+          <div class="sidebar-card privacy-sidebar-card">
+            <h4 class="sidebar-heading">🔒 100% Local Inference Guarantee</h4>
+            <p class="privacy-small-text">
+              Transmitted strictly to your local LM Studio instance via loopback (<code>127.0.0.1</code>). No external APIs or cloud relay servers are used.
+            </p>
+          </div>
+        </aside>
+
+        <!-- Main Chat & Conversation Area -->
+        <div class="explorer-main">
+          <!-- Server Status Alert (Shown when LM Studio is down) -->
+          <div class="server-alert-banner hidden" id="explorer-server-alert">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-content">
+              <strong>LM Studio Server is Offline</strong>
+              <p>Back in Time communicates exclusively with your local LM Studio instance. Please ensure LM Studio is running with a loaded model and local server turned on.</p>
+            </div>
+            <a href="#settings" class="btn btn-sm btn-neon-yellow">Open Settings &amp; Guide</a>
+          </div>
+
+          <!-- Chat Conversation Log -->
+          <div class="chat-container" id="chat-container">
+            <div class="chat-welcome">
+              <div class="welcome-stamp">✦ AUDIOVISUAL HERITAGE EXPLORER ✦</div>
+              <h2>Ask the Memory Archive</h2>
+              <p>Ask questions about your home films, cassette voice tapes, radio broadcasts, and photographs. The local AI categorizes facts, identifies unrecorded gaps, and generates interview questions for living relatives.</p>
+              <div class="welcome-disclaimer">
+                <strong>Archival Standards Enforced:</strong> Categorized into Documented Facts, Family Recollections, Possible Interpretations, and Unknown Information. Quotations or private thoughts are never fabricated.
+              </div>
+
+              <!-- Quick Initialization Buttons -->
+              <div class="welcome-quick-actions" style="margin-top: 1.5rem; display: flex; gap: 0.65rem; justify-content: center; flex-wrap: wrap;">
+                <button type="button" class="btn btn-sm btn-neon-cyan prompt-chip" data-prompt="Introduce yourself as the Back in Time archival historian, summarize what audiovisual collections are active in my archive, and list what we can explore.">
+                  🚀 Initialize &amp; Overview Archive
+                </button>
+                <button type="button" class="btn btn-sm btn-neon-yellow prompt-chip" data-prompt="What oral stories were recorded on cassette tapes, and what questions should I ask relatives next?">
+                  🎙️ Analyze Oral Cassette Tapes
+                </button>
+                <button type="button" class="btn btn-sm btn-neon-pink prompt-chip" data-prompt="Evaluate all preserved memories and identify any timeline gaps or missing evidence.">
+                  🔍 Identify Missing Evidence
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Message Input Box -->
+          <form class="chat-input-bar" id="chat-form">
+            <textarea
+              id="chat-input"
+              class="chat-textarea"
+              placeholder="Ask a question about your audiovisual memories (e.g. 'What home films do we have from the 1960s?')..."
+              rows="2"
+              required
+            ></textarea>
+            <div class="input-actions">
+              <button type="submit" class="btn btn-neon-pink btn-send" id="btn-chat-send">
+                <span class="send-icon">✦</span> Explore
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 5: SETTINGS & LOCAL AI -->
+    <section id="page-settings" class="page-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Settings &amp; Local AI Configuration</h2>
+          <p class="section-subtitle">Manage your local LM Studio connection, backup storage, and privacy preferences.</p>
+        </div>
+      </div>
+
+      <div class="settings-grid">
+        <!-- LM Studio Connection Box -->
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div class="card-icon">⚡</div>
+            <div>
+              <h3>LM Studio Configuration</h3>
+              <p class="text-muted">Exclusive local inference provider. Loopback-only enforcement.</p>
+            </div>
+          </div>
+
+          <form id="settings-ai-form">
+            <div class="form-group">
+              <label for="setting-server-url">LM Studio Server URL:</label>
+              <input type="url" id="setting-server-url" class="form-input" value="http://127.0.0.1:1234/v1" required>
+              <small class="form-help">Must be a loopback address (e.g. <code>http://127.0.0.1:1234/v1</code>). Cloud APIs are rejected for privacy.</small>
+            </div>
+
+            <div class="form-group">
+              <div class="label-with-action">
+                <label for="setting-model-id">Loaded Model ID:</label>
+                <button type="button" class="btn-text btn-sm" id="btn-auto-detect-models">↻ Detect Models</button>
+              </div>
+              <select id="setting-model-id" class="form-select">
+                <option value="">(No models detected yet — click Detect Models)</option>
+              </select>
+              <input type="text" id="setting-custom-model" class="form-input hidden" placeholder="Or enter exact model ID manually">
+              <small class="form-help">Compatible with Gemma, Llama, Mistral, Qwen, or any model loaded in LM Studio.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="setting-response-length">AI Response Detail Level:</label>
+              <select id="setting-response-length" class="form-select">
+                <option value="400">Concise (Max 400 tokens) — Quick, punchy bullet points</option>
+                <option value="900" selected>Balanced (Max 900 tokens) — Thorough archival breakdown</option>
+                <option value="1600">In-depth (Max 1600 tokens) — Deep analytical inquiry &amp; interview questions</option>
+              </select>
+            </div>
+
+            <div class="settings-actions">
+              <button type="button" class="btn btn-neon-yellow" id="btn-test-connection">Test Connection</button>
+              <button type="submit" class="btn btn-neon-pink" id="btn-save-ai-settings">Save Settings</button>
+            </div>
+          </form>
+
+          <!-- Connection Diagnostic Result Box -->
+          <div class="diagnostic-box" id="diagnostic-box">
+            <div class="diagnostic-status" id="diagnostic-status">Status: Not tested</div>
+            <div class="diagnostic-details" id="diagnostic-details">Click 'Test Connection' to check your local LM Studio server.</div>
+          </div>
+        </div>
+
+        <!-- Gemma Model Preset & System Prompt Card -->
+        <div class="settings-card gemma-preset-card">
+          <div class="settings-card-header">
+            <div class="card-icon">🧠</div>
+            <div>
+              <h3>Gemma Tuning &amp; Initial System Prompt</h3>
+              <p class="text-muted">Preset prompt and optimal parameters for Gemma in LM Studio.</p>
+            </div>
+          </div>
+
+          <p class="settings-description">
+            Use this official prompt as the <strong>System Prompt</strong> or <strong>Custom Preset</strong> for your Gemma model in LM Studio.
+            It primes Gemma to behave as a rigorous archival historian that separates documented evidence from oral lore and never fabricates memories.
+          </p>
+
+          <div class="form-group">
+            <div class="label-with-action">
+              <label for="gemma-system-prompt-text"><strong>Gemma Archival System Prompt:</strong></label>
+              <button type="button" class="btn btn-sm btn-neon-cyan" id="btn-copy-system-prompt">
+                📋 Copy Prompt
+              </button>
+            </div>
+            <textarea id="gemma-system-prompt-text" class="form-textarea" rows="8" readonly>You are "Back in Time", an expert archival historian and audiovisual preservation specialist celebrating the World Day for Audiovisual Heritage.
+Your mission is preserving personal, family, and cultural memories recorded on films, videotapes, audio cassettes, radio broadcasts, television telecasts, and photographs across diverse languages and dialects.
+
+=== STRICT ARCHIVAL RULES (MANDATORY) ===
+1. You must NEVER invent family stories, fabricate quotations, claim to have personally experienced past events, or pretend to know the private thoughts or emotions of deceased people.
+2. In EVERY response where you discuss family events or media recordings, you MUST explicitly separate and categorize the facts into these four categories:
+   - 📜 Documented Information: Facts firmly verified by a cited film reel, tape recording, radio aircheck, slide, or primary source.
+   - 🗣️ Family Recollection: Oral memories recalled by family members or spoken on tape; valuable but subjective.
+   - 💡 Possible Interpretation: Reasonable logical inferences, cultural context of the era, or hypotheses—never presented as fact.
+   - ❓ Unknown / Missing Information: Critical gaps, unrecorded dates, missing footage, or details where evidence is completely lacking.
+3. Suggest 2-3 specific, thoughtful interview questions the user can ask living relatives to help uncover missing audiovisual context or interpret oral tapes.
+4. When discussing recordings, note the medium (e.g. Super 8 film, VHS tape, C-90 cassette, radio broadcast, Kodachrome slide) and language/dialect where relevant.
+5. In your response, explicitly cite which Record ID (e.g. [Record #mem_av_001]) you drew each detail from.
+6. If evidence is missing, state it directly and suggest how to preserve or investigate it.</textarea>
+          </div>
+
+          <div class="gemma-params-box">
+            <h4>Recommended Gemma Inference Parameters:</h4>
+            <div class="params-pills">
+              <span class="param-pill"><strong>Temperature:</strong> 0.2 – 0.3 (Strict Factuality)</span>
+              <span class="param-pill"><strong>Top P:</strong> 0.90</span>
+              <span class="param-pill"><strong>Context Length:</strong> 4096 – 8192</span>
+              <span class="param-pill"><strong>Repeat Penalty:</strong> 1.10</span>
+              <span class="param-pill"><strong>Chat Template:</strong> Gemma</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- How to launch LM Studio Guide -->
+        <div class="settings-card guide-card">
+          <div class="settings-card-header">
+            <div class="card-icon">📖</div>
+            <div>
+              <h3>How to Start LM Studio Server</h3>
+              <p class="text-muted">Simple 3-step setup on Windows 11.</p>
+            </div>
+          </div>
+
+          <div class="guide-steps">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <strong>Open LM Studio &amp; Download a Model</strong>
+                <p>Launch LM Studio. Search for a model such as <strong>Gemma 2 (2B, 9B)</strong>, <strong>Llama 3.2</strong>, or <strong>Mistral</strong> and click Download.</p>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <strong>Go to the Local Server Tab</strong>
+                <p>Click the <strong>&lt;&gt; (Developer / Local Server)</strong> tab on the left navigation bar in LM Studio.</p>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <strong>Start Server on Port 1234</strong>
+                <p>Select your downloaded model from the top dropdown, verify the port is set to <code>1234</code>, and toggle <strong>Start Server</strong>. Then return here and click <em>Test Connection</em>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-info">
+            <span class="callout-icon">💡</span>
+            <div class="callout-text">
+              <strong>Tip:</strong> LM Studio works completely offline. You do not need an active internet connection once your model is downloaded.
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Archive & Backup Management -->
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div class="card-icon">💾</div>
+            <div>
+              <h3>Archive Backup &amp; Portability</h3>
+              <p class="text-muted">Export and import your memory archive anytime.</p>
+            </div>
+          </div>
+
+          <p class="settings-description">
+            Your memories and audiovisual media are stored in your browser's persistent storage.
+            To safeguard against cache clearing or to move your archive to another computer,
+            regularly download a JSON backup.
+          </p>
+
+          <div class="backup-actions">
+            <button class="btn btn-neon-pink" id="btn-export-json" type="button">
+              📥 Export Archive (JSON)
+            </button>
+
+            <label class="btn btn-neon-cyan file-upload-btn">
+              📤 Import Archive (JSON)
+              <input type="file" id="file-import-json" accept=".json,application/json" class="file-input-hidden">
+            </label>
+
+            <button class="btn btn-neon-yellow" id="btn-load-sample-settings" type="button">
+              Load Audiovisual Samples
+            </button>
+          </div>
+
+          <div class="danger-zone">
+            <h4>Danger Zone</h4>
+            <p>Delete all memories, media files, and conversation history stored in this browser.</p>
+            <button class="btn btn-danger btn-sm" id="btn-clear-archive" type="button">
+              Clear All Archive Data
+            </button>
+          </div>
+        </div>
+
+        <!-- Privacy & Storage Disclosures -->
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div class="card-icon">🛡️</div>
+            <div>
+              <h3>Privacy &amp; Security Disclosures</h3>
+              <p class="text-muted">Transparent data handling guidelines.</p>
+            </div>
+          </div>
+
+          <ul class="disclosure-list">
+            <li><strong>Browser-Local Storage:</strong> Memory records are held in your browser's <code>localStorage</code>. While protected by your browser's origin boundary, it is not hardware-encrypted.</li>
+            <li><strong>No Cloud AI Transmission:</strong> All AI requests are handled through our local Node.js proxy to your loopback address (<code>127.0.0.1</code>). No external AI providers, tracking, or cloud servers receive your family stories.</li>
+            <li><strong>Audiovisual Preservation:</strong> Keep digital backups of your home recordings, tapes, and photographs.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: CREATE / EDIT AUDIOVISUAL MEMORY RECORD -->
+  <div class="modal-backdrop hidden" id="memory-modal" role="dialog" aria-modal="true" aria-labelledby="modal-memory-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-memory-title" class="modal-title">Record Audiovisual Memory</h3>
+        <button class="modal-close" id="btn-close-modal" type="button" aria-label="Close">&times;</button>
+      </div>
+
+      <form id="memory-form" class="modal-body">
+        <input type="hidden" id="form-memory-id" value="">
+
+        <div class="form-group">
+          <label for="form-title">Memory Title <span class="required">*</span></label>
+          <input type="text" id="form-title" class="form-input" placeholder="e.g. Super 8 Summer at Coney Island, Thanksgiving Cassette Tape..." required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="form-media-type">Audiovisual Media Type <span class="required">*</span></label>
+            <select id="form-media-type" class="form-select" required>
+              <option value="film">🎞️ Film / Home Reel (8mm, 16mm, Cine)</option>
+              <option value="video">📼 Video Recording (VHS, Camcorder, Tape)</option>
+              <option value="audio">🎙️ Audio Track (Cassette, Reel, Oral History)</option>
+              <option value="radio">📻 Radio Broadcast / Aircheck</option>
+              <option value="photo" selected>📸 Photograph / Kodachrome Slide</option>
+              <option value="television">📺 Television Program / Broadcast</option>
+              <option value="document">📜 Historical Document / Script</option>
+            </select>
+          </div>
+
+          <div class="form-group col-6">
+            <label for="form-format-medium">Physical Medium / Format</label>
+            <input type="text" id="form-format-medium" class="form-input" placeholder="e.g. Super 8 Kodachrome, VHS SP Tape, C-90 Cassette, 78 RPM Disc">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="form-person">Person, Voice, or Subject <span class="required">*</span></label>
+            <input type="text" id="form-person" class="form-input" placeholder="e.g. Arthur Vance, Clara Schmidt, Nonna Maria" required>
+          </div>
+
+          <div class="form-group col-6">
+            <label for="form-year">Approximate Year or Date</label>
+            <input type="text" id="form-year" class="form-input" placeholder="e.g. 1964-07-04, Circa 1978, 1986">
+            <label class="checkbox-label">
+              <input type="checkbox" id="form-is-approximate">
+              <span>Mark date as approximate / circa</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="form-language">Language &amp; Dialect</label>
+            <input type="text" id="form-language" class="form-input" placeholder="e.g. English, Italian (Neapolitan), Spanish, Yiddish, French...">
+          </div>
+
+          <div class="form-group col-6">
+            <label for="form-duration">Recording Duration / Extent</label>
+            <input type="text" id="form-duration" class="form-input" placeholder="e.g. 42m 15s, 3m 42s, Still Frame">
+          </div>
+        </div>
+
+        <!-- Picture / Media Upload or URL -->
+        <div class="form-group">
+          <label>Media File or Artwork (Stored Directly to Local Hard Drive)</label>
+          <div class="media-upload-box">
+            <div class="media-preview-container" id="form-media-preview-box">
+              <img id="form-media-preview" class="form-media-preview-img hidden" alt="Media Preview">
+              <div id="form-media-audio-preview" class="form-media-audio-preview hidden">
+                <span style="font-size: 2rem; display: block;">🎙️</span>
+                <span id="form-audio-name" style="font-size: 0.72rem; color: var(--neon-cyan); word-break: break-all;">Audio Track</span>
+              </div>
+              <div id="form-media-preview-placeholder" class="media-preview-placeholder">
+                <span>📸 Upload photos, audio tracks, video clips or documents</span>
+              </div>
+            </div>
+            <div class="media-upload-inputs">
+              <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <label class="btn btn-sm btn-neon-cyan file-upload-btn" id="btn-label-file-input">
+                  📁 Choose File (Photo, Audio, Video, PDF)
+                  <input type="file" id="form-file-input" accept="image/*,audio/*,video/*,.pdf" class="file-input-hidden">
+                </label>
+                <span id="upload-status-indicator" class="upload-status-badge hidden">Uploading...</span>
+              </div>
+              <span class="upload-or">or paste direct media URL, local path or Data URI:</span>
+              <input type="text" id="form-media-url" class="form-input" placeholder="/uploads/media_... or https://...">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="form-notes">Story, Transcript or Personal Notes <span class="required">*</span></label>
+          <textarea id="form-notes" class="form-textarea" rows="4" placeholder="Describe the recording, audio contents, quotes, atmosphere, visual details, or historical context..." required></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="form-source">Source of Information / Archive Provenance <span class="required">*</span></label>
+            <input type="text" id="form-source" class="form-input" placeholder="e.g. Found in metal film canister labeled 'Summer 64', digitized in 2021" required>
+          </div>
+
+          <div class="form-group col-6">
+            <label for="form-evidence">Evidence / Confidence Class <span class="required">*</span></label>
+            <select id="form-evidence" class="form-select" required>
+              <option value="documented">📜 Documented Record (Physical recording, film, aircheck, manifest)</option>
+              <option value="family_recollection" selected>🗣️ Family Recollection (Oral memories recalled by relatives)</option>
+              <option value="possible_interpretation">💡 Possible Interpretation (Hypothesis or historical context)</option>
+              <option value="uncertain">❓ Uncertain / Conflicting (Contradictory accounts or unconfirmed lore)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="form-tags">Tags (optional, comma-separated)</label>
+          <input type="text" id="form-tags" class="form-input" placeholder="e.g. film, super 8, coney island, kodachrome, radio, vhs">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="btn-cancel-modal">Cancel</button>
+          <button type="submit" class="btn btn-neon-pink" id="btn-save-memory">Save Media Memory</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: VIEW MEMORY DETAILS -->
+  <div class="modal-backdrop hidden" id="view-modal" role="dialog" aria-modal="true" aria-labelledby="view-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="badge-row">
+          <span class="badge" id="view-media-badge">Media Type</span>
+          <span class="badge" id="view-evidence-badge">Evidence Class</span>
+          <span class="badge badge-muted" id="view-date-badge">Date</span>
+        </div>
+        <button class="modal-close" id="btn-close-view" type="button" aria-label="Close">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Media Visual Display -->
+        <div class="view-media-hero" id="view-media-hero">
+          <!-- Injected dynamically -->
+        </div>
+
+        <h2 id="view-modal-title" class="view-title">Memory Title</h2>
+
+        <div class="view-meta-row">
+          <span class="view-meta-item"><strong>Subject:</strong> <span id="view-person">Person</span></span>
+          <span class="view-meta-item"><strong>Medium:</strong> <span id="view-medium">Format</span></span>
+          <span class="view-meta-item"><strong>Language:</strong> <span id="view-language">Language</span></span>
+          <span class="view-meta-item"><strong>Duration:</strong> <span id="view-duration">Duration</span></span>
+        </div>
+
+        <div class="view-notes-box">
+          <div class="notes-label">Record Narrative &amp; Audio Transcript:</div>
+          <p id="view-notes" class="view-notes-content"></p>
+        </div>
+
+        <div class="view-source-box">
+          <strong>Source of Record / Archive Provenance:</strong>
+          <span id="view-source">Source</span>
+        </div>
+
+        <div class="view-tags-box" id="view-tags-container">
+          <!-- Tags injected here -->
+        </div>
+
+        <div class="view-timestamps">
+          <span>Created: <span id="view-created-at">--</span></span>
+          <span>Last Updated: <span id="view-updated-at">--</span></span>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-neon-yellow" id="btn-view-deck-play">▶ Play in Deck</button>
+        <button type="button" class="btn btn-neon-cyan" id="btn-view-ask-ai">✦ Ask AI About This</button>
+        <button type="button" class="btn btn-outline" id="btn-view-edit">Edit</button>
+        <button type="button" class="btn btn-danger" id="btn-view-delete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIRMATION DIALOG -->
+  <div class="modal-backdrop hidden" id="confirm-modal" role="dialog" aria-modal="true">
+    <div class="modal-card modal-sm">
+      <div class="modal-header">
+        <h3 id="confirm-title" class="modal-title">Confirm Action</h3>
+        <button class="modal-close" id="btn-close-confirm" type="button">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-message">Are you sure you want to proceed?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" id="btn-confirm-cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" id="btn-confirm-ok">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Application Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/explorer.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
